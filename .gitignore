@@ -1,0 +1,9 @@
+# 바이너리 및 압축 파일
+agent-app-leak
+*.zip
+
+# 로그 파일
+*.log
+
+# macOS
+.DS_Store
