@@ -75,12 +75,27 @@ OS는 크게 두 영역으로 나뉜다.
 | **VM (가상 머신)** | 하드웨어 전체를 가상화 | 무겁지만 완전한 격리 |
 | **Docker (컨테이너)** | OS 커널을 공유, 프로세스만 격리 | 가볍고 빠름 |
 
-이번 미션에서 Docker를 쓰는 이유: `agent-leak-app`은 Linux ELF 바이너리다. macOS에서는 직접 실행 불가 → Docker로 Linux 환경을 만들어 실행한다.
+이번 미션에서 Docker를 쓰는 이유: `agent-app-leak`은 Linux x86-64 ELF 바이너리다. macOS에서는 직접 실행 불가 → Docker로 Linux 환경을 만들어 실행한다.
 
 ```text
-[macOS 호스트]
-  └── [Docker 컨테이너: ubuntu 22.04]
-        └── [agent-leak-app 프로세스]
+[macOS 호스트 (Apple Silicon ARM64)]
+  └── [Docker 컨테이너: ubuntu 22.04 --platform linux/amd64]
+        └── [agent-app-leak 프로세스 (x86-64 에뮬레이션)]
+```
+
+**Apple Silicon (M1/M2/M3/M4) 주의**: `--platform linux/amd64` 없이 실행하면 Rosetta가 x86-64 동적 링커를 찾지 못해 아래 에러가 발생한다.
+
+```text
+rosetta error: failed to open elf at /lib64/ld-linux-x86-64.so.2
+```
+
+올바른 실행 명령:
+
+```bash
+docker run -it --platform linux/amd64 --name codyssey-b12 \
+  -v "$(pwd):/workspace" ubuntu:22.04 /bin/bash
+
+uname -m   # x86_64 이 출력되어야 함
 ```
 
 ### 인터럽트(Interrupt)

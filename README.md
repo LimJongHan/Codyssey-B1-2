@@ -37,9 +37,20 @@ B1-2/
 - [ ] Deadlock 장애 분석 리포트
 - [ ] (선택) 스케줄링 알고리즘 추론 리포트
 
+## 실행 환경
+
+`agent-app-leak`은 **x86-64 Linux 전용 바이너리**다.
+
+| 환경 | 실행 방법 |
+| --- | --- |
+| Apple Silicon Mac (M1/M2/M3/M4) | `docker run --platform linux/amd64 ubuntu:22.04` |
+| Intel Mac / Linux | `docker run ubuntu:22.04` 또는 직접 실행 |
+
+> Apple Silicon에서 `--platform` 없이 실행하면 `rosetta error: failed to open elf` 에러 발생.
+
 ## 사전 환경 설정
 
-`agent-leak-app` 실행 전 아래 환경변수를 `.bash_profile`에 설정해야 한다.
+`agent-app-leak` 실행 전 아래 환경변수를 `.bash_profile`에 설정해야 한다.
 
 ```bash
 export AGENT_HOME=<경로>
